@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cameraface.MainActivity">
+
+    <com.cameraface.camera.CameraView
+        android:id="@+id/camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:background="@android:color/black"
+        app:facing="front"/>
+
+    <com.cameraface.FaceView
+        android:id="@+id/iv_face_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/mBtnHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="显示头饰"
+            android:textSize="17sp"/>
+
+        <Button
+            android:id="@+id/mBtnFace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="显示面具"
+            android:textSize="17sp"/>
+
+
+        <Button
+            android:id="@+id/mBtnLeftEye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="显示左眼"
+            android:textSize="17sp"/>
+
+        <Button
+            android:id="@+id/mBtnRightEye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="显示右眼"
+            android:textSize="17sp"/>
+
+        <Button
+            android:id="@+id/mBtnMouth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="显示嘴"
+            android:textSize="17sp"/>
+
+        <Button
+            android:id="@+id/mBtnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="清除所有装饰"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

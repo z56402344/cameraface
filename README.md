@@ -43,9 +43,7 @@ public static class Face {
 }
 
 //绘制对应的装饰图片
-
-@Override
-    protected void onDraw(Canvas canvas) {
+protected void onDraw(Canvas canvas) {
         if (mFaces == null || mFaces.length < 1) {
             return;
         }

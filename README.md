@@ -2,6 +2,11 @@
 
 Android Camera 内置人脸识别的Demo
 
+![Image][1]
+
+[1]: http://7xs7n9.com1.z0.glb.clouddn.com/face.png
+
+
 主要方法
 通过设置回调
 mCamera.setFaceDetectionListener(mFaceDetectionListener);

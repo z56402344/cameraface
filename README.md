@@ -1,6 +1,7 @@
 # CameraFace
 
 Android Camera 内置人脸识别的Demo
+通过Android源生API支持的人脸识别FaceDetection，获取到脸部矩形坐标，左右眼坐标，嘴坐标通过View动态实摄像头实时装饰功能 
 
 ![Image][1]
 
@@ -8,8 +9,10 @@ Android Camera 内置人脸识别的Demo
 
 
 主要方法
-通过设置回调
+//人脸识别设置监听
 mCamera.setFaceDetectionListener(mFaceDetectionListener);
+//人脸识别监听启动
+ mCamera.startFaceDetection();
 
 class  FaceDetectionListener implements Camera.FaceDetectionListener{
 

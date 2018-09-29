@@ -2,6 +2,7 @@ package com.cameraface.opengl;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 
 public class MyGLSurfaceView extends GLSurfaceView {
@@ -28,6 +29,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Render the view only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+    }
+
+    public void requestRenderAndFace(Camera.Face[] faces){
+        //刷新 GLSurfaceView
+        mRenderer.setWH(getMeasuredWidth(),getMeasuredHeight());
+        mRenderer.setFaces(faces);
+        requestRender();
     }
 
 }

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,17 +31,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FaceView mIvFace;
     private CameraView mCameraView;
-    private GLSurfaceView mGLView;
+    private MyGLSurfaceView mGLView;
     private RelativeLayout mRlSurface;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            Camera.Face[] faces = null;
             if (msg.what == AC_DRAW) {
-                Camera.Face[] faces = (Camera.Face[]) msg.obj;
+                faces = (Camera.Face[]) msg.obj;
                 mIvFace.setFaces(faces);
             } else if(msg.what == AC_CAMERA_DATA) {
                 mIvFace.setCameraData(msg.arg1, msg.arg2);
+            }
+            if (mGLView != null){
+                mGLView.requestRenderAndFace(faces);
             }
             return false;
         }

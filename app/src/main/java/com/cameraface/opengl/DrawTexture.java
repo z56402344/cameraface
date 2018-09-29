@@ -5,10 +5,15 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
+import android.hardware.Camera;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 import com.cameraface.R;
+import com.cameraface.Util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -19,6 +24,7 @@ import java.nio.ShortBuffer;
  * Created by duguang on 18-9-28.
  */
 public class DrawTexture {
+    private static final String TAG = "FACE";
 
     private static final String VERTEX_SHADER =
             "uniform mat4 u_MVPMatrix;" +
@@ -72,6 +78,11 @@ public class DrawTexture {
     private int attribTexCoord;
     private int uniformTexture;
     private int[] textureId;
+    private Camera.Face mFace;
+    private int mW,mH;
+
+    private Matrix mMatrix = new Matrix();
+
 
     public DrawTexture(Context context) {
         super();
@@ -82,7 +93,11 @@ public class DrawTexture {
         loadVertex();
         initShader();
         loadTexture();
+    }
 
+    public void setWH(int w,int h){
+        mW = w;
+        mH = h;
     }
 
     private void loadVertex() {
@@ -151,7 +166,6 @@ public class DrawTexture {
     }
 
     public static int loadShader(int shaderType, String source) {
-
         // Create the shader object
         int shader = GLES20.glCreateShader(shaderType);
         if (shader == 0) {
@@ -217,7 +231,6 @@ public class DrawTexture {
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-
     }
 
     //绘制每一帧的时候回调
@@ -236,6 +249,67 @@ public class DrawTexture {
         GLES20.glVertexAttribPointer(attribTexCoord, 2, GLES20.GL_FLOAT, false, 20, mVertexBuffer);
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, mIndexBuffer);
 
+    }
+
+    private RectF mRect = new RectF();
+
+    public void setFaces(Camera.Face face){
+        mFace = face;
+//        quadVertex;
+        Log.i(TAG, "DrawTexture  mW=" +mW +", mH="+mH );
+
+
+        Util.prepareMatrix(mMatrix, true, 90, mW, mH);
+        mMatrix.postRotate(0);
+        mRect.set(face.rect);
+        mMatrix.mapRect(mRect);//计算出在父布局的真是坐标
+        //识别的Rect 系数，使装饰图片根据人脸与摄像头的距离放大或者缩小
+        float dx = mRect.bottom - mRect.top;
+        boolean isHeadShow = true;
+//        mRect.left=463.32, mRect.top=983.94, mRect.right=847.26, mRect.bottom=1479.63
+        Log.i(TAG, "DrawTexture  mRect.left=" +mRect.left +", mRect.top="+mRect.top +", mRect.right="+mRect.right +", mRect.bottom="+mRect.bottom );
+
+        float[] lefttop = tranXY(mRect.left,mRect.top);
+        float[] righttop = tranXY(mRect.right,mRect.top);
+        float[] leftbottom = tranXY(mRect.left,mRect.bottom);
+        float[] rightbottom = tranXY(mRect.right,mRect.bottom);
+        quadVertex[0] = lefttop[0];
+        quadVertex[1] = lefttop[1];
+        quadVertex[15] = righttop[0];
+        quadVertex[16] = righttop[1];
+        quadVertex[5] = leftbottom[0];
+        quadVertex[6] = leftbottom[1];
+        quadVertex[10] = rightbottom[0];
+        quadVertex[11] = rightbottom[1];
+        Log.i(TAG, "DrawTexture  lefttop[0]=" +lefttop[0] +", lefttop[1]="+lefttop[1] +",\n " +
+                "righttop[0]="+righttop[0] +", righttop[0]="+righttop[0]+",\n " +
+                "leftbottom[0]="+leftbottom[0] +", leftbottom[1]="+leftbottom[1]+",\n " +
+                "rightbottom[0]="+rightbottom[0] +", rightbottom[1]="+rightbottom[1] );
+
+        loadVertex();
+//        initShader();
+//        loadTexture();
+
+    }
+
+    //从手机坐标系到GLSurfaceView 世界坐标的投影坐标
+    public float[] tranXY(float x,float y){
+        //GLSurfaceView 世界坐标的投影坐标
+        float[] point = new float[2];
+        int centerX = mW/2;
+        int centerY = mH/2;
+        if (x > centerX){
+            point[0] = (x - centerX) / centerX;
+        }else{
+            point[0] = -(centerX - x) / centerX;
+        }
+
+        if (y > centerY){
+            point[1] = -(y - centerY) / centerY;
+        }else{
+            point[1] = (centerY - y) / centerY;
+        }
+        return point;
     }
 
 

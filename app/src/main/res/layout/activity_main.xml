@@ -16,6 +16,13 @@
         android:background="@android:color/black"
         app:facing="front"/>
 
+    <RelativeLayout
+        android:id="@+id/mRlSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
+
     <com.cameraface.FaceView
         android:id="@+id/iv_face_pic"
         android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,9 +16,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.cameraface.camera.CameraView;
+import com.cameraface.opengl.MyGLSurfaceView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FaceView mIvFace;
     private CameraView mCameraView;
+    private GLSurfaceView mGLView;
+    private RelativeLayout mRlSurface;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mCameraView = findViewById(R.id.camera);
         mIvFace = findViewById(R.id.iv_face_pic);
+        mGLView = new MyGLSurfaceView(this);
+        mRlSurface = findViewById(R.id.mRlSurface);
+        mRlSurface.addView(mGLView);
 
         if (mCameraView != null) {
             mCameraView.init(mHandler);
@@ -74,11 +82,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQUEST_CAMERA_PERMISSION);
         }
+        mGLView.onResume();
     }
 
     @Override
     protected void onPause() {
         mCameraView.stop();
+        mGLView.onPause();
         super.onPause();
     }
 

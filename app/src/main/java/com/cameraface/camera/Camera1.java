@@ -554,7 +554,6 @@ class Camera1 extends CameraViewImpl {
                 }
             }
             m.sendToTarget();
-
         }
     }
 }
